@@ -1,22 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { useAddJobMutation, useAddJobUserMutation } from "../services/api";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAddJobMutation, useAddJobUserMutation } from '../services/api';
 
 const AddJob = () => {
   const navigate = useNavigate();
   const [addJob, { isLoading: isAddingJob }] = useAddJobMutation();
   const [addJobUser, { isLoading: isAddingJobUser }] = useAddJobUserMutation();
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
-  const userRole = useSelector((state) => state.user.role);
   const [jobData, setJobData] = useState({
-    company: "",
-    position: "",
-    description: "",
+    company: '',
+    position: '',
+    description: '',
     salaryFrom: 0,
     salaryTo: 0,
-    type: "",
-    city: "",
+    type: '',
+    city: '',
     homeOffice: false,
   });
 
@@ -24,37 +21,27 @@ const AddJob = () => {
     const { name, value, type, checked } = e.target;
     setJobData((prevData) => ({
       ...prevData,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: type === 'checkbox' ? checked : value,
     }));
   };
-
-  useEffect(() => {
-    if (!isLoggedIn || userRole === "jobseeker") {
-      navigate("/");
-    }
-  }, [isLoggedIn, navigate]);
-
-  if (!isLoggedIn) {
-    return null;
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await addJob(jobData);
-      console.log("Job creation response:", response);
+      console.log('Job creation response:', response);
       const job = response.data; // Adjust based on actual response structure
       if (!job || !job.id) {
-        throw new Error("Invalid job response");
+        throw new Error('Invalid job response');
       }
-      const userId = localStorage.getItem("userId"); // Assuming the userId is stored in localStorage after login
+      const userId = localStorage.getItem('userId'); // Assuming the userId is stored in localStorage after login
       await addJobUser({ userId, jobId: job.id });
-      navigate("/");
+      navigate('/');
     } catch (error) {
       if (error.data && error.data.message) {
-        console.error("Failed to add job:", error.data.message);
+        console.error('Failed to add job:', error.data.message);
       } else {
-        console.error("Failed to add job:", error);
+        console.error('Failed to add job:', error);
       }
     }
   };
@@ -193,9 +180,7 @@ const AddJob = () => {
               className="btn btn-primary"
               disabled={isAddingJob || isAddingJobUser}
             >
-              {isAddingJob || isAddingJobUser
-                ? "Hozzáadás..."
-                : "Álláshirdetés hozzáadása"}
+              {(isAddingJob || isAddingJobUser) ? "Hozzáadás..." : "Álláshirdetés hozzáadása"}
             </button>
           </form>
         </div>
