@@ -5,7 +5,7 @@
 Kérlek, töltsétek ki az adataitokkal beadás előtt!
 
 ```
-Risztics Ádád
+Risztics Ádám
 Srxh37
 Kliensoldali webprogramozás - beadandó
 Ezt a megoldást a fent írt hallgató küldte be és készítette a Kliensoldali webprogramozás kurzus számonkéréséhez.
